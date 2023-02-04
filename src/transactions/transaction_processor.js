@@ -1,52 +1,31 @@
-var txr = [];
 
-function processTransactions(transActions) {
-
-    txr = [];
-
-    if(!validateTransactions(transActions)) {
-        throw new Error("Undefined collection of transactions")
+const wordFrequency = (words) => {
+    if(words === undefined) { 
+        throw new Error("Undefined collections or transations in processTransasctions");
     }
+    else{
+        const wordFrequencyTable = words.reduce((frequencyTable, word) => (
+            frequencyTable.has(word) ?
+            frequencyTable.set(word, 
+                (frequencyTable.get(word) + 1)) :
+            frequencyTable.set(word,1) 
+        ), new Map());
 
-    let txCount = {}
+        const orderedTotals = [...wordFrequencyTable].sort((a,b) => (
+            (a[1] == b[1]) ?
+            a[0].localeCompare(b[0]) :
+            a[1] - b[0]
+        ));
 
-    const numberOfTransactions = transActions.length;
-
-    for(var i = 0; i < numberOfTransactions; i++) {
-        const transaction = transActions[i];
-        txCount[transaction] ? txCount[transaction] += 1 : txCount[transaction] = 1;
+        const outputFormat =  orderedTotals.reduce((flatOutput,total,index) => {
+            flatOutput.push(`${total[0]} ${total[1]}`);
+            return flatOutput;
+        }, []);
+        
+        return outputFormat;
     }
-
-    txCount = sortByAmountThenName(txCount);
-    
-    // Place them back in array for returning
-    Object.keys(txCount).forEach(function (key, index) {
-        txr[index] = `${key} ${txCount[key]}`;
-    });
-
-    return txr;
 }
 
-function sortByAmountThenName(txCount) {
-    let sortedKeys = Object.keys(txCount).sort(function sortingFunction(itemOne, itemTwo) {
-        return  txCount[itemTwo] - txCount[itemOne] || itemOne > itemTwo || -(itemOne < itemTwo)}
-    );
-
-    let sortedResults = {};
-    for(let objectKey of sortedKeys) {
-        sortedResults[objectKey] = txCount[objectKey];
-    }
-
-    return sortedResults;
+export const processTransactions = (words) => {
+    return wordFrequency(words);
 }
-
-
-function validateTransactions(transactions) {
-    if(transactions === undefined) {
-        return false;
-    } 
-
-    return true;
-}
-
-module.exports = processTransactions;
