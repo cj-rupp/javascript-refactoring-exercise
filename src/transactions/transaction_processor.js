@@ -12,12 +12,8 @@ const wordFrequency = (words) => {
             frequencyTable.set(word,1) 
         ), new Map());
 
-<<<<<<< HEAD
         /* Extract an array of pairs and sort them.
         The scores are sorted in descending order, but the word in ascending. */
-=======
-        /* Extract an array of pairs and sort them */
->>>>>>> a92d1b587f2aff2609b140db9eea27714ea0eb87
         const orderedTotals = [...wordFrequencyTable].sort((a,b) => (
             (a[1] === b[1]) ?
             a[0].localeCompare(b[0]) :
